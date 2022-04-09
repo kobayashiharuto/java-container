@@ -6,7 +6,7 @@ public class JabberServer {
     int port = 0;
     try {
       port = Integer.parseInt(args[0]);
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       System.out.println("正しいポート番号を入力してください。");
       return;
     }
