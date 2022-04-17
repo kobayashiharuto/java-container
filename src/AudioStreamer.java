@@ -16,12 +16,8 @@ public class AudioStreamer {
 
     TargetDataLine line;
     DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
-    if (!AudioSystem.isLineSupported(info)) {
-      System.out.println("Not Supported");
-      System.exit(1);
-    }
 
-    DatagramSocket socket = new DatagramSocket(8081);
+    DatagramSocket socket = new DatagramSocket();
     InetAddress IPAddress = InetAddress.getLocalHost();
 
     try {
@@ -32,6 +28,7 @@ public class AudioStreamer {
 
       line.start();
       while (true) {
+        line.read(data, 0, data.length);
         DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, 8080);
         socket.send(sendPacket);
       }
