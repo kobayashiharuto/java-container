@@ -10,30 +10,25 @@ public class AudioListener {
     InetAddress addr = InetAddress.getByName("localhost"); // IP アドレスへの変換
     System.out.println("addr = " + addr);
 
-    if (args.length > 0) {
-      File soundFile = AudioUtil.getSoundFile(args[0]);
-      System.out.println("Client: " + soundFile);
-      try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(soundFile))) {
-        play(in);
-      }
-    } else {
-      Socket socket = new Socket(addr, AudioStreamer.PORT); // ソケットの生成
-      try {
-        System.out.println("socket = " + socket);
+    Socket socket = new Socket(addr, AudioStreamer.PORT); // ソケットの生成
+    try {
+      while (true) {
+        System.out.println("受信待ち");
         InputStream in = new BufferedInputStream(socket.getInputStream());
+        System.out.println("再生開始");
         play(in);
-      } finally {
-        socket.close();
-        System.out.println("通信を終了します");
-
+        System.out.println("再生終了");
       }
+    } finally {
+      socket.close();
+      System.out.println("通信を終了します");
     }
-
   }
 
   private static synchronized void play(final InputStream in) throws Exception {
     AudioInputStream ais = AudioSystem.getAudioInputStream(in);
     try (Clip clip = AudioSystem.getClip()) {
+      System.out.println("count: aaaa");
       clip.open(ais);
       clip.start();
       Thread.sleep(100); // given clip.drain a chance to start
