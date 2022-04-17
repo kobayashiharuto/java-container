@@ -1,5 +1,8 @@
+package wav;
+
 import java.io.*;
 import java.net.*;
+
 import record.*;
 
 public class AudioStreamer {
@@ -35,14 +38,10 @@ public class AudioStreamer {
   static void record() throws Exception {
     final Recorder recorder = new Recorder(new File(tempPath));
     Thread stopper = new Thread(recorder);
-    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    System.out.print("enter to start recording >>");
-    in.readLine();
     System.out.println("recording...");
     stopper.start();
-    System.out.print("enter to stop recording >>");
-    in.readLine();
+    Thread.sleep(2000);
     recorder.stopRecording();
-    System.out.println("finished");
+    System.out.println("send");
   }
 }

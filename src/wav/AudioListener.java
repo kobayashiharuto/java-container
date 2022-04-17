@@ -1,3 +1,4 @@
+package wav;
 import java.io.*;
 import java.net.*;
 
@@ -13,11 +14,8 @@ public class AudioListener {
     Socket socket = new Socket(addr, AudioStreamer.PORT); // ソケットの生成
     try {
       while (true) {
-        System.out.println("受信待ち");
         InputStream in = new BufferedInputStream(socket.getInputStream());
-        System.out.println("再生開始");
         play(in);
-        System.out.println("再生終了");
       }
     } finally {
       socket.close();
@@ -25,14 +23,15 @@ public class AudioListener {
     }
   }
 
-  private static synchronized void play(final InputStream in) throws Exception {
+  private static void play(final InputStream in) throws Exception {
+    System.out.println("受信待ち");
     AudioInputStream ais = AudioSystem.getAudioInputStream(in);
     try (Clip clip = AudioSystem.getClip()) {
-      System.out.println("count: aaaa");
+      System.out.println("再生開始");
       clip.open(ais);
       clip.start();
-      Thread.sleep(100); // given clip.drain a chance to start
-      clip.drain();
+      Thread.sleep(2000); // given clip.drain a chance to start
+      System.out.println("再生終了");
     }
   }
 }
